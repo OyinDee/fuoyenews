@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Post from './Post';
 import Postpending from './Postpending';
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ value	}) {
     const [activeButton, setActiveButton] = useState('approved');
 
     const handleButtonClick = (buttonType) => {
@@ -49,19 +49,19 @@ export default function AdminDashboard() {
                                 className={`btn btn-success ${activeButton === 'approved' ? 'active' : ''}`}
                                 onClick={() => handleButtonClick('approved')}
                             >
-                                Approved
+                                Approved {value = <small>0</small>}
                             </button>
                             <button
                                 className={`btn btn-warning ${activeButton === 'pending' ? 'active' : ''}`}
                                 onClick={() => handleButtonClick('pending')}
                             >
-                                Pending
+                                Pending {value = <small>20</small>}
                             </button>
                             <button
                                 className={`btn btn-danger ${activeButton === 'rejected' ? 'active' : ''}`}
                                 onClick={() => handleButtonClick('rejected')}
                             >
-                                Rejected
+                                Rejected {value = <small>0</small>}
                             </button>
                         </div>
                     </div>
