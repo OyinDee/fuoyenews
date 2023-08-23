@@ -2,6 +2,7 @@ import React from 'react'
 import img1 from './IMAGES/logo.png'
 import { useState } from 'react';
 import Post from './Post';
+import Postpending from './Postpending';
 
 export default function AdminDashboard() {
     const [activeButton, setActiveButton] = useState('approved');
@@ -12,11 +13,11 @@ export default function AdminDashboard() {
 
     const changeContent = () => {
         if (activeButton === 'approved') {
-            return <div>Content for Approved Posts</div>;
-        } else if (activeButton === 'pending') {
             return <Post />;
+        } else if (activeButton === 'pending') {
+            return <Postpending />;
         } else if (activeButton === 'rejected') {
-            return <div>Content for Rejected Posts</div>;
+            return <Post />;
         }
     };
 
