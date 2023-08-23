@@ -83,7 +83,7 @@ export default function ToBeApproved() {
               <button className="btn btn-outline-success" onClick={()=>approve(val)}>Approve</button>
               <button className="btn btn-outline-warning" onClick={()=>feedback(val)}>Send Feedback</button>        
               <button className="btn btn-outline-danger" onClick={()=>remove(val)}>Decline</button>
-              </div>}/>
+              </div>}/> 
             </div>
           ))}
         </>

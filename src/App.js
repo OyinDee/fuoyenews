@@ -10,6 +10,8 @@ import UserLogin from './components/Userlogin'
 import Usersignup from './components/Usersignup';
 import Home from './components/Home'
 import ToBeApproved from './components/Home';
+import AdminDashboard from './components/Admindashboard';
+
 function App() {
 
     return(
@@ -19,6 +21,7 @@ function App() {
         <Route path="/" element={<Homepage/>}/>
         <Route path="/signup" element={<Usersignup/>}/>
         <Route path="/userlogin" element={<UserLogin/>}/>
+        <Route path="/admin" element={<AdminDashboard/>}/>
         </Routes>
   </>
     );
