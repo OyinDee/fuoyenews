@@ -13,7 +13,7 @@ export default function Userlogin() {
     useEffect(() => {
         const username=localStorage.username    
         const token=localStorage.token
-        axios.get('http://localhost:1111/dashcheck', {
+        axios.get('https://fuoye-api.onrender.com/dashcheck', {
             headers:{
                 'Authorization':`Bearer ${token}`,
                 'Content-Type':'application/json',
@@ -42,7 +42,7 @@ export default function Userlogin() {
                 username, password
             }
             console.log(userDetails)
-            axios.post('http://localhost:1111/login', userDetails).then((response,err) => {              
+            axios.post('https://fuoye-api.onrender.com/login', userDetails).then((response,err) => {              
                 console.log(response);
                 setMessage(response.data.message)
                 if(response.data.message=="Your login is successful!"){
