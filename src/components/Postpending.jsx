@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Postpending({ username, date, time, details, title, coverImage }) {
+export default function Postpending({ username, date, time, details, title, coverImage, onClickApprove, onClickDecline, onClickFeedback }) {
   return (
     <div className="card shadow-lg bg-white p-3 my-5">
       <div className="">
@@ -21,9 +21,9 @@ export default function Postpending({ username, date, time, details, title, cove
         </div>
         <div className='my-3'>{details}</div>
         <div className=''>
-          <button className='btn bg-success text-light'>Approve</button>
-          <button className='btn bg-danger mx-2 text-light'>Decline</button>
-          <button className='btn bg-secondary mt-2 mt-md-0 text-light'>Send Feedback</button>
+          <button className='btn bg-success text-light' onClick={onClickApprove}>Approve</button>
+          <button className='btn bg-danger mx-2 text-light' onClick={onClickDecline}>Decline</button>
+          <button className='btn bg-secondary mt-2 mt-md-0 text-light' onClick={onClickFeedback}>Send Feedback</button>
         </div>
       </div>
     </div>

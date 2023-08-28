@@ -16,17 +16,6 @@ export default function AdminDashboard({ value }) {
         setActiveButton(buttonType);
     };
 
-    const handleApproveClick = async (postId) => {
-        try {
-          // Send a POST request to your API to mark the post as approved
-          await axios.post('https://fuoye-api.onrender.com/approvepost', {id:id});
-          // After successful approval, refetch the data
-          fetchData();
-        } catch (error) {
-          console.error("Error approving post:", error);
-        }
-      };
-
     useEffect(() => {
         // Fetch data from the API endpoint based on the active button
         const fetchData = async () => {
@@ -48,6 +37,18 @@ export default function AdminDashboard({ value }) {
         fetchData();
     }, [activeButton]);
 
+    const approvedPost = (post) => {
+        console.log(post.id);
+        const id = post.id;
+        // const postconfirm=window.confirm("This post will be approved for the public to view. Okay?")
+        // if (postconfirm) {
+        //     axios.post('https://newsapp-dpv1.onrender.com/approvepost', {id:id})
+        // } else {
+        //     alert("Oh.. Oh!")
+        // }
+    }
+
+
     const changeContent = () => {
         if (activeButton === 'approved' || activeButton === 'rejected') {
             return <Post />;
@@ -61,6 +62,7 @@ export default function AdminDashboard({ value }) {
                     details={post.postContent}
                     title={post.title}
                     coverImage={post.newsimg}
+                    onClickApprove={approvedPost(post)}
                 />
             ));
         }
