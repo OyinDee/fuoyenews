@@ -38,14 +38,14 @@ export default function AdminDashboard({ value }) {
     }, [activeButton]);
 
     const approvedPost = (post) => {
-        console.log(post.id);
+        console.log(post._id);
         const id = post.id;
-        // const postconfirm=window.confirm("This post will be approved for the public to view. Okay?")
-        // if (postconfirm) {
-        //     axios.post('https://newsapp-dpv1.onrender.com/approvepost', {id:id})
-        // } else {
-        //     alert("Oh.. Oh!")
-        // }
+        const postconfirm = window.confirm("This post will be approved for the public to view. Okay?")
+        if (postconfirm) {
+          axios.post('https://fuoye-api.onrender.com/approvepost', {id:id})
+        } else {
+          alert("Oh.. Oh!")
+        }
     }
 
 
@@ -53,16 +53,16 @@ export default function AdminDashboard({ value }) {
         if (activeButton === 'approved' || activeButton === 'rejected') {
             return <Post />;
         } else if (activeButton === 'pending') {
-            return posts.map(post => (
+            return posts.map((post, id) => (
                 <Postpending
-                    key={post.id} // Assuming each post has an ID
+                    key={post.id}
                     username={post.username}
                     date={post.date}
                     time={post.time}
                     details={post.postContent}
                     title={post.title}
                     coverImage={post.newsimg}
-                    onClickApprove={approvedPost(post)}
+                    onClickApprove={() => approvedPost(post)}
                 />
             ));
         }
