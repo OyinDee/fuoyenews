@@ -48,14 +48,13 @@ export default function AdminDashboard({ value }) {
         }
     }
 
-
     const changeContent = () => {
         if (activeButton === 'approved' || activeButton === 'rejected') {
             return <Post />;
-        } else if (activeButton === 'pending') {
-            return posts.map((post, id) => (
+            } else if (activeButton === 'pending') {
+            return posts.map(post => (
                 <Postpending
-                    key={post.id}
+                    key={post._id}
                     username={post.username}
                     date={post.date}
                     time={post.time}
