@@ -5,6 +5,9 @@ import { useEffect, useState } from "react"
 import img1 from './IMAGES/logo.png'
 import img2 from './IMAGES/meetingg.png'
 import img3 from './IMAGES/posts.svg'
+import { Like } from './Like'
+import { Reply } from './Reply'
+import { FlagPost } from './FlagPost'
 
 export default function Homepage() {
     const navigate = useNavigate()
@@ -34,31 +37,12 @@ export default function Homepage() {
         })
     })
     const token = localStorage.token;
-    // useEffect(() => {
-    //     axios.get('https://odiduo.herokuapp.com/dashcheck', {
-    //         headers: {
-    //             'Authorization': `Bearer ${token}`,
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json'
-    //         }
-    //     }
-    //     ).then((response) => {
-    //         console.log(response)
 
-    //         if (localStorage.token && response.data.message == 'verification successful') {
-    //             navigate('/addgood')
-    //         }
-    //     else {
-    //       console.log("it isnt")
-    //       navigate('/userlogin')
-    //     }
-    //   })
-    // }, [])
-    const [Inputa, setInputa] = useState('')
-    const [SelectedFile, setSelectedFile] = useState(undefined)
-    const [Inputb, setInputb] = useState('')
-    const uploadFile = (e) => {
-        const file = e.target.files[0]
+ const [Inputa, setInputa] = useState('')
+  const [SelectedFile, setSelectedFile] = useState(undefined)
+  const [Inputb, setInputb] = useState('')
+  const uploadFile = (e) => {
+    const file = e.target.files[0]
 
         console.log(file);
         let reader = new FileReader()
@@ -87,6 +71,40 @@ export default function Homepage() {
         setInputb('')
 
     }
+
+    const [approvedPosts, setApprovedPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchApprovedPosts = async () => {
+      try {
+        const response = await axios.get('https://fuoye-api.onrender.com/userscheck');
+        setApprovedPosts(response.data);
+      } catch (error) {
+        console.error("Error fetching approved posts:", error);
+      }
+    };
+    fetchApprovedPosts();
+}, []);
+
+const handleLogout = () => {
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('username');
+    navigate('/userlogin');
+}
+const [password, setPassword] = useState('');
+const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+
+const goToAdmin = () => {
+    const password = window.prompt("Enter Password");
+    if (password === "2078") {
+        setIsPasswordCorrect(true);
+        navigate('/admin');
+    } else {
+        alert("Incorrect password. Please try again.");
+    }
+};
+
+
     return (
         <>
             <div className="d-flex flex-column min-vh-100">
@@ -94,8 +112,10 @@ export default function Homepage() {
                     <nav className="d-flex justify-content-between ps-4">
                         <div className="w-25">
                             <div className="">
-                                <img src={img1} height="80rem" width="80rem" alt="fuoye logo" className="my-1 text-uppercase" />
-                            </div>
+                                <a to='/admin' onClick={goToAdmin}>
+                                    <img src={img1} height="80rem" width="80rem" alt="fuoye logo" className="my-1 text-uppercase" />
+                                </a>
+                                </div>
                         </div>
                         <div className="flex justify-content-center my-auto me-4">
                             <span className='text-color-light text-uppercase'>
@@ -107,7 +127,7 @@ export default function Homepage() {
                         </div>
                     </nav>
                 </header>
-                <div className='mt-5 mb-5' ></div>
+                <div className='mt-5 mb-5'></div>
                 <div className="d-flex flex-column mx-4 mt-5">
                     <input type="text" className="form-control my-2 text-center" placeholder="Post topic..." name="posttopic" onChange={e => setInputa(e.target.value)} value={Inputa} />
                     <textarea id="" className="mb-2 border border-2" placeholder="What news do you have for us right now...?" name="postdetails" onChange={e => setInputb(e.target.value)} value={Inputb}></textarea>
@@ -115,7 +135,8 @@ export default function Homepage() {
 
                     <button className="btn btn-success p-2" onClick={addpost}>POST</button>
                 </div>
-                <div className="mx-auto text-uppercase mt-5">
+                <div className='d-flex justify-content-around align-items-center mt-5'>
+                <div className="text-uppercase">
                     <span className="border border-1 border-dark border-top-0 border-start-0 border-end-0">
                         latest
                     </span>
@@ -123,8 +144,13 @@ export default function Homepage() {
                         news
                     </span>
                 </div>
-                <div>
-                    <div className="mx-4 border border-1 p-2 rounded rounded-4 mt-3">
+                <div className=''>
+                <button className='btn bg-warning' onClick={handleLogout}>Log out</button>
+                </div>
+                </div>
+                
+                <div className='my-4'>
+                    <div className="mx-4 border border-1 p-2 rounded rounded-4 mt-3 bg-light px-4">
                         <div>
                             <div className="mx-auto border-1 border"><img src={img2} style={{ width: 200 }} /></div>
                             <h2><center>THE BOARD MEETING OVER CAMPAIGNS</center></h2>
@@ -132,11 +158,32 @@ export default function Homepage() {
                             <div className="opacity-50 d-flex justify-content-end" >
                                 <h6>22/05/23||Diidee</h6>
                             </div>
-                            <div className="d-flex justify-content-between p-2"><button className="btn btn-outline-success w-25 p-2">Like</button><button className="btn w-25 btn-outline-dark p-2">Reply</button><button className="btn w-25 btn-outline-danger p-2">Fake news</button></div>
+                            <div className="d-flex justify-content-between p-2">
+                            <Like />
+                            <Reply />
+                            <FlagPost />    
+                            </div>
                         </div>
                     </div>
-
-                    <div className="mx-4 border border-1 p-2 rounded rounded-4 mt-3">
+                    <div className='mx-4 border border-1 p-2 rounded rounded-4 mt-3 bg-light px-4'>
+                {approvedPosts.map(post => (
+                    <div key={post._id}>
+                        <center>
+                        <h2 className='fw-bold'>{post.title}</h2>
+                        <p>{post.postContent}</p>
+                        <div className="opacity-50 d-flex justify-content-end" >
+                            <h6>{post.date} || {post.username} || {post.time}</h6>
+                        </div>
+                        <div className="d-flex justify-content-between p-2">
+                            <Like />
+                            <Reply />
+                            <FlagPost />
+                        </div>
+                        </center>
+                    </div>
+                ))}
+            </div>
+                    <div className="mx-4 border border-1 p-2 rounded rounded-4 mt-3 bg-light px-4">
                         <div>
                             <div className="mx-auto border-1 border w-100 h-20"><img src={img3} style={{ width: 200 }} /></div>
                             <h2><center>SIGN UP TO FUOYE NEWS TO STAY INFORMED</center></h2>
@@ -146,7 +193,11 @@ export default function Homepage() {
                         <div className="opacity-50 d-flex justify-content-end" >
                             <h6>28/05/23||Astro</h6>
                         </div>
-                        <div className="d-flex justify-content-between p-2"><button className="btn btn-outline-success w-25 p-2">Like</button><button className="btn w-25 btn-outline-dark p-2">Reply</button><button className="btn w-25 btn-outline-danger p-2">Fake news</button></div>
+                        <div className="d-flex justify-content-between p-2">
+                        <Like />
+                            <Reply />
+                            <FlagPost />    
+                        </div>
                     </div>
                 </div>
                 <footer className="py-2 bg-success border-1 text-uppercase text-bg-light text-center mt-auto pt-0">
